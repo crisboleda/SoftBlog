@@ -1,0 +1,5 @@
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <a href="{% url "users:user_profile" request.user.pk %}">Cancel</a>
+    <input type="submit" value="Confirm">
+</form>

@@ -1,0 +1,36 @@
+<div class="inbox_chat">
+{% with main_path=request.path|slice:':21' %}
+{% for group in groups %}
+    <div class="chat_list {% if main_path == '/chat/messages/group/' %}{% if group.pk == object.id %}active_chat{% endif %}{% endif %}" style="cursor:pointer;">
+        <a href="{% url 'chat:messages_group' group.pk %}">
+            <div class="chat_people">
+                {% if main_path == '/chat/messages/group/' and request.user in group.members.all %}
+                    <div class="chat_img"> <img src="{% if group.picture %}{{ group.picture.url }}{% else %}https://ptetutorials.com/images/user-profile.png{% endif %}" alt="sunil"> </div>
+
+                    <div class="chat_ib">
+                        <h5>{{ group.name }}<span class="chat_date"><i>created </i>{{ group.created }}</span></h5>
+                        <p>{{ group.description }}</p>
+                    </div>
+                {% elif main_path != '/chat/messages/group/' %}
+                    <div class="chat_img"> <img src="{% if group.picture %}{{ group.picture.url }}{% else %}https://ptetutorials.com/images/user-profile.png{% endif %}" alt="sunil"> </div>
+
+                    <div class="chat_ib">
+                        <h5>{{ group.name }}<span class="chat_date"><i>created </i>{{ group.created }}</span></h5>
+                        <p>{{ group.description }}</p>
+                        {% if not request.user in group.members.all and main_path != '/chat/messages/group/' %}
+                            <div class="text-right">
+                                <a href="{% url 'chat:join_or_exit_group' group.pk %}" class="btn btn-primary text-light">Join me</a>
+                            </div>
+                        {% elif main_path != '/chat/messages/group/' %}
+                            <div class="text-right">
+                                <a href="{% url 'chat:join_or_exit_group' group.pk %}" class="btn btn-danger text-light">Exit group</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+{% endfor %}
+{% endwith %}
+</div>

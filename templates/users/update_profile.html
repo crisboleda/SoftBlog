@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>Update Profile</title>
+        {% load static %}
+        <!-- Bootstrap core CSS -->
+        <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="{% static "vendor/fontawesome-free/css/all.min.css" %}" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        {% load static %}
+        <!-- Custom styles for this template -->
+        <link href="{% static "css/clean-blog.min.css" %}" rel="stylesheet">
+        <link href="{% static "css/clean-blog.css" %}" rel="stylesheet" type="text/css">
+        <link href="{% static "css/comment.css" %}">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'posts:list_post' %}">SoftBlog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "posts:list_post" %}">Posts</a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "posts:create_post" %}">Create Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "users:user_profile" request.user.pk %}">My Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "users:logout" %}">Exit</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "users:login" %}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "users:register" %}">Register</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "users:register" %}">Chat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br>
+        <form enctype="multipart/form-data" action="" method="POST">{% csrf_token %}
+            {% if form.errors %}
+                {{ form.errors }}
+            {% endif %}
+            <div class="mb-3">
+                {% load static %}
+                <img alt="User Pic" src="{% if not request.user.profile.picture %}{% static "img/default_user.jpg" %}{% else %}{{ request.user.profile.picture.url }}{% endif %}" name="picture" class="img-circle img-responsive" height="124" width="124"> 
+            </div>
+            <div class="form-group">
+                {{ form.picture }}
+            </div>
+            <div class="form-group">
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name }}
+            </div>
+            <div class="form-group">
+                {{ form.email }}
+            </div>
+            <p>Do you want to change the password? <a href="{% url 'password_change' %}">Click here</a></p> 
+            <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+    </body>
+</html>

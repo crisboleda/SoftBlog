@@ -1,0 +1,88 @@
+{% extends "posts/base.html" %}
+
+{% block title %}SoftBlog | Post{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+{% load static %}
+<header class="masthead" style="background-image: url({% static 'img/coding-computer.jpg' %})">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          <h1>{{ post.title|upper }}</h1>
+          <h2 class="subheading">{{ post.subtitle|capfirst }}</h2>
+          <span class="meta">Posted by
+            <a href="{% url "users:user_profile" post.author.pk %}">{% if request.user == post.author %}me{% else %}{{ post.author.username }}{% endif %}</a>
+            on {{ post.data_published }}
+          </span>
+          <div class="badge badge-light text-dark mt-3">
+            {{ post.category }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {{ post.content|safe }}
+        {% if not request.user in post.likes.all %}
+          <a href="{% url "posts:like_post" post.pk %}"><i class="fa fa-heart fa-lg text-secondary" aria-hidden="true"></i></a>
+        {% else %}
+          <a href="{% url "posts:unlike_post" post.pk %}"><i class="fa fa-heart fa-lg text-danger"></i></a>
+        {% endif %}
+        {{ post.likes.count }}    
+        {% for tag_post in post.tags.all %}
+          <div class="badge badge-primary text-wrap {% if forloop.first %}ml-5{% else %}ml-3{% endif %}">
+            #{{ tag_post.name_tag }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% load static %}
+</article>
+
+{% if comments %}
+  <hr>
+  <br/>
+  <div class="form-group col-lg-8 col-md-10 mx-auto">
+    <h5>Comments</h5>
+    {% for comment in comments %}
+      <div class="card mt-3">
+        <div class="card-body p-2">
+          <blockquote class="blockquote mb-0">
+            <p>{{ comment.description }}</p>
+            <footer class="blockquote-footer p-2">Comment by <cite title="Source Title"><a>@{{ comment.user.username }}</a></cite> on {{ comment.created }}</footer>
+          </blockquote>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <br/>
+  <br/>
+{% endif %}
+<hr>
+
+
+
+
+<form action="{% url "comments:make_comment" post.pk %}" method="POST">
+  {% csrf_token %}
+  <div class="form-group col-lg-8 col-md-10 mx-auto">
+    <label for="exampleFormControlTextarea1">Make a comment:</label>
+    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" placeholder="Enter your comment"></textarea>
+
+    <button type="submit" class="btn btn-outline-primary mt-3 btn-sm ">Send</button>
+  </div>
+</form>
+{% endblock %}
+
+

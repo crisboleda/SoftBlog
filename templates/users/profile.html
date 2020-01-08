@@ -1,0 +1,86 @@
+{% extends "posts/base.html" %}
+
+{% block staticfiles %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endblock %}
+
+{% block title %}SoftBlog | Post{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <header class="masthead" style="background-image: url({% static 'img/coding-computer.jpg' %})">
+    {% comment %} <div class="overlay"></div> {% endcomment %}
+    <div class="container">    
+        <div class="row" style="margin-top:50px">
+            <div class="panel panel-default" style="width:100%">
+                <div class="panel-heading"><h4 >User Profile</h4></div>
+                <div class="panel-body">
+                    <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+                       <img alt="User Pic" src="{% if not user.profile.picture %}{% static "img/default_user.jpg" %}{% else %}{{ user.profile.picture.url }}{% endif %}" id="profile-image1" class="img-circle img-responsive"> 
+                    </div>
+                        <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8" >
+                            <div class="container" >
+                                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                            </div>
+                        <hr>
+                        <ul class="container details" >
+                            <li><p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>{{ user.username }}</p></li>
+                            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{ user.email }}</p></li>
+                        </ul>
+                        <hr>
+                    <div class="col-sm-5 col-xs-6 tital " >Date Of Joining: {{ user.profile.created }}</div>
+                </div>
+                {% if user == request.user %}
+                  <div class="text-right">
+                    <a href="{% url 'users:update_profile' %}" class="btn btn-primary mt-4 align-right">Update Profile</a>
+                  </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </header>
+
+    <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {% if posts %}
+          {% for post in posts %}
+            <div class="post-preview">
+              <a href="{% url "posts:detail_post" post.pk %}">
+                <h2 class="post-title">
+                  {{ post.title|upper }}
+                </h2>
+                <h3 class="post-subtitle">
+                  {{ post.subtitle|capfirst }}
+                </h3>
+              </a>
+              <p class="post-meta">Posted by
+                <a href="{% url "users:user_profile" post.author.pk %}">{% if request.user == post.author %}me{% else %}{{ post.author.username }}{% endif %}</a>
+                on {{ post.data_published }}</p>
+            </div>
+            {% load static %}
+            {% if request.user == post.author %}
+              <a href="{% url 'posts:update_post' post.pk %}" class="btn btn-primary"><i class="fa fa-paint-brush text-white" aria-hidden="true"></i></a>
+              <a href="{% url "posts:delete_post" post.pk %}" class="btn btn-danger"><i class="fa fa-trash text-white" aria-hidden="true"></i></a>
+            {% endif %}
+            <hr>
+          {% endfor %}
+          {% comment %} <div class="clearfix">
+            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          </div> {% endcomment %}
+        {% else %}
+          <h2 class="post-title">
+            There are not posts :(
+          </h2>
+          <a href="{% url 'posts:create_post' %}" class="nav-link text-primary">Create post</a>
+        {% endif %}
+        <!-- Pager -->
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+

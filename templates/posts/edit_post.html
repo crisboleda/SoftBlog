@@ -1,0 +1,66 @@
+{% extends "posts/base.html" %}
+
+{% block title %}SoftBlog | Create Post{% endblock %}
+
+
+{% block content %}
+
+    {% load static %}
+    <header class="masthead" style="background-image: url({% static "img/code-two.jpg" %})">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>SoftBlog</h1>
+                    <span class="subheading">Share your knowledge!</span>
+                </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-sm-12 col-md-5 col-lg-10 pt-2 pl-5 pr-5 pb-5" id="auth-container">
+                {% if form.errors %}
+                    {{ form.errors }}
+                {% endif %}
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.title }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.subtitle }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.category }}
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tags</button>
+                            <div class="dropdown-menu">
+                                {% for tag in tags %}
+                                    <a class="dropdown-item" name="item-tag">{{ tag.name_tag }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mt-3" id="row-tags">
+                            
+                        </div>
+                        {{ form.tags }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.content }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Update Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block load_tags %}
+    <script src="{% static 'js/load_tag.js' %}"></script>
+{% endblock %}
