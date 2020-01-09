@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
-
 class Group(models.Model):
         
     name = models.CharField(max_length=40, unique=True)
@@ -24,7 +22,6 @@ class Group(models.Model):
         self.save()
 
 
-
 class Message(models.Model):
     content = models.CharField(max_length=200)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='message_of_group')
@@ -35,6 +32,3 @@ class Message(models.Model):
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
-@receiver(pre_save, sender=Message)
-def check_user_in_group(sender, instance, **kwargs):
-    print(instance.author in instance.group.members.all())

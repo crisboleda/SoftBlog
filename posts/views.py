@@ -20,13 +20,12 @@ class OwnerPostMixin(object):
 
 
 # Create your views here.
-
 class ListPostView(ListView):
     template_name = 'posts/index.html'
     queryset = Post.objects.all()
     ordering = '-data_published'
     context_object_name = 'posts'
-    paginate_by = 1
+    paginate_by = 5
 
 
 class DetailPostView(DetailView):
@@ -53,7 +52,6 @@ class CreatePostView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
         return context
-
 
 
 # System of likes

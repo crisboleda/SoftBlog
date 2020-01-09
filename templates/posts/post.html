@@ -60,7 +60,7 @@
         <div class="card-body p-2">
           <blockquote class="blockquote mb-0">
             <p>{{ comment.description }}</p>
-            <footer class="blockquote-footer p-2">Comment by <cite title="Source Title"><a>@{{ comment.user.username }}</a></cite> on {{ comment.created }}</footer>
+            <footer class="blockquote-footer p-2">Comment by <cite title="Source Title"><a href="{% url 'users:user_profile' comment.user.pk %}">@{{ comment.user.username }}</a></cite> on {{ comment.created }}</footer>
           </blockquote>
         </div>
       </div>

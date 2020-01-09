@@ -26,8 +26,7 @@ urlpatterns = [
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('comments/', include(('comments.urls', 'comments'), namespace='comments')),
     path('chat/', include(('chat.urls', 'chat'), namespace='chat')),
-    path('contact/', local_views.contact, name="contact"),
-
+    path('contact/', local_views.ContactView.as_view(), name="contact"),
     path('account/', include('django.contrib.auth.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

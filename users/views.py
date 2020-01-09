@@ -31,7 +31,6 @@ class SignupUserView(FormView):
         return super().form_valid(form)
 
 
-
 class ProfileUserView(DetailView):
     template_name = 'users/profile.html'
     model = User
@@ -60,8 +59,6 @@ class UpdateProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save(self.request.user)
         return super().form_valid(form)
-
-
 
     def get_success_url(self):
         return reverse_lazy('users:user_profile', kwargs={'pk':self.request.user.pk})
