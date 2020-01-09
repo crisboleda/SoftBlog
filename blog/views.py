@@ -1,6 +1,9 @@
 
 from django.shortcuts import render
+from django.views.generic import ListView, TemplateView
 
 
-def contact(request):
-    return render(request, template_name="core/contact.html")
+class ContactView(TemplateView):
+    template_name = 'core/contact.html'
+
+

@@ -58,5 +58,5 @@ def add_message_to_group(request, pk):
     except:
         raise Http404('upss')
 
-    return JsonResponse({'good': 'very good'})
+    return JsonResponse({'status': 'very good'})
 

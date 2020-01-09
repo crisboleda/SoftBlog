@@ -13,11 +13,11 @@ Python 3.0 Django
 PostgreSQL
 
 ### Usage
-`python -m venv .venv
-source .env/bin/activate
+`python -m venv .venv          
+source .env/bin/activate           
 pip install -r requirements.txt`
 
-`python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver`
+`python manage.py makemigrations           
+python manage.py migrate        
+python manage.py runserver` 
 
