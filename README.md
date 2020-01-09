@@ -8,3 +8,16 @@ Este proyecto trata de un foro de programación de software donde las personas p
 
 ### Dependencies
 Python 3.0 Django
+
+##### Database
+PostgreSQL
+
+### Usage
+`python -m venv .venv
+source .env/bin/activate
+pip install -r requirements.txt`
+
+`python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver`
+
